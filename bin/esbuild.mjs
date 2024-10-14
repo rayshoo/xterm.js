@@ -12,6 +12,7 @@ const config = {
   isProd: argv.includes('--prod'),
   isWatch: argv.includes('--watch'),
   isDemoClient: argv.includes('--demo-client'),
+  isGopassClient: argv.includes('--gopass-client'),
   isHeadless: argv.includes('--headless'),
   addon: argv.find(e => e.startsWith('--addon='))?.replace(/^--addon=/, ''),
 };
@@ -128,6 +129,34 @@ if (config.addon) {
     ...bundleConfig,
     entryPoints: [`demo/client.ts`],
     outfile: 'demo/dist/client-bundle.js',
+    external: ['util', 'os', 'fs', 'path', 'stream', 'Terminal'],
+    alias: {
+      // Library ESM imports
+      "@xterm/xterm": ".",
+      "@xterm/addon-attach": "./addons/addon-attach/lib/addon-attach.mjs",
+      "@xterm/addon-clipboard": "./addons/addon-clipboard/lib/addon-clipboard.mjs",
+      "@xterm/addon-fit": "./addons/addon-fit/lib/addon-fit.mjs",
+      "@xterm/addon-image": "./addons/addon-image/lib/addon-image.mjs",
+      "@xterm/addon-search": "./addons/addon-search/lib/addon-search.mjs",
+      "@xterm/addon-serialize": "./addons/addon-serialize/lib/addon-serialize.mjs",
+      "@xterm/addon-web-links": "./addons/addon-web-links/lib/addon-web-links.mjs",
+      "@xterm/addon-webgl": "./addons/addon-webgl/lib/addon-webgl.mjs",
+      "@xterm/addon-unicode11": "./addons/addon-unicode11/lib/addon-unicode11.mjs",
+      "@xterm/addon-unicode-graphemes": "./addons/addon-unicode-graphemes/lib/addon-unicode-graphemes.mjs",
+
+      // Non-bundled ESM imports
+      // HACK: Ligatures imports fs which in the esbuild bundle resolves at runtime _on startup_
+      //       instead of only when it's needed. This causes a `Dynamic require of "fs" is not
+      //       supported` exception to be thrown. So the unbundled out-esbuild sources are used
+      //       instead of the .mjs file which seems to resolve the issue.
+      "@xterm/addon-ligatures": "./addons/addon-ligatures/out-esbuild/LigaturesAddon",
+    }
+  }
+} else if (config.isGopassClient) {
+  bundleConfig = {
+    ...bundleConfig,
+    entryPoints: [`demo/terminal.ts`],
+    outfile: 'demo/dist/terminal-bundle.js',
     external: ['util', 'os', 'fs', 'path', 'stream', 'Terminal'],
     alias: {
       // Library ESM imports

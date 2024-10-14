@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>xterm.js demo</title>
+    <!--
+      WARNING: This demo is a barebones implementation designed for development and evaluation
+      purposes only. It is definitely NOT production ready and does not aim to be so. Exposing the
+      demo to the public as is would introduce security risks for the host.
+    -->
+    <link rel="shortcut icon" type="image/png" href="/logo.png">
+    <link rel="stylesheet" href="/xterm.css" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <h1 style="color: #2D2E2C">xterm.js: A terminal for the <em style="color: #5DA5D5">web</em></h1>
+    <div id="container">
+      <div class="grid">
+        <div id="terminal-container"></div>
+      </div>
+    </div>
+      <script src="dist/terminal-bundle.js" defer ></script>
+      <script>
+        function openSection(event, section) {
+          const tabContent = document.getElementsByClassName("tabContent");
+          let itr;
+          for (itr = 0; itr < tabContent.length; itr+=1) {
+            tabContent[itr].style.display = "none";
+          }
+          const tabLinks = document.getElementsByClassName("tabLinks");
+          for (itr = 0; itr < tabLinks.length; itr+=1) {
+            tabLinks[itr].className = tabLinks[itr].className.replace(" active", "");
+          }
+          document.getElementById(section).style.display = "block";
+          localStorage.setItem("tab", section);
+          event.currentTarget.className += " active";
+        }
+      </script>
+    </body>
+</html>
