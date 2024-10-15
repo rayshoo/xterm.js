@@ -101,9 +101,13 @@ const addons: { [T in AddonType]: IDemoAddon<T> } = {
   ligatures: { name: 'ligatures', ctor: LigaturesAddon, canChange: true }
 };
 
-let terminalContainer;
+let terminalContainer = document.getElementById('terminal-container');
 export function setTerminalContainerElement(id: string): void {
   terminalContainer = document.getElementById(id);
+}
+let wsPort = location.port;
+export function setWebSocketPort(port: string): void {
+  wsPort = port;
 }
 const actionElements = {
   find: document.querySelector('#find') as HTMLInputElement,
@@ -111,7 +115,7 @@ const actionElements = {
   findPrevious: document.querySelector('#find-previous') as HTMLInputElement,
   findResults: document.querySelector('#find-results')
 };
-const paddingElement = document.getElementById('padding') as HTMLInputElement;
+// const paddingElement = document.getElementById('padding') as HTMLInputElement;
 
 const xtermjsTheme = {
   foreground: '#F8F8F8',
@@ -210,11 +214,6 @@ const createNewWindowButtonHandler: () => void = () => {
   }
 };
 
-let wsPort;
-export function setWebSocketPort(port: string): void {
-  wsPort = port;
-}
-
 export function initTerminal(): void {
   if (document.location.pathname === '/test') {
     window.Terminal = Terminal;
@@ -253,12 +252,11 @@ export function initTerminal(): void {
     // document.getElementById('bce').addEventListener('click', coloredErase);
     addVtButtons();
     initImageAddonExposed();
-    testEvents();
-}
+    // testEvents();
+  }
 }
 
 function createTerminal(): void {
-  console.log('createTerminal')
   // Clean terminal
   while (terminalContainer.children.length) {
     terminalContainer.removeChild(terminalContainer.children[0]);
@@ -307,7 +305,7 @@ function createTerminal(): void {
     const rows = size.rows;
     const url = `http://localhost:${wsPort}/terminals/` + pid + '/size?cols=' + cols + '&rows=' + rows;
 
-    fetch(url, { method: 'POST' });
+    fetch(url, { method: 'POST', signal: AbortSignal.timeout(5000) });
   });
   protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
   socketURL = protocol + location.hostname + ((wsPort) ? (':' + wsPort) : '') + '/terminals/';
@@ -342,32 +340,32 @@ function createTerminal(): void {
   });
   resizeObserver.observe(terminalContainer);
 
-  addDomListener(paddingElement, 'change', setPadding);
+  // addDomListener(paddingElement, 'change', setPadding);
 
-  addDomListener(actionElements.findNext, 'keydown', (e) => {
-    if (e.key === 'Enter') {
-      addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
-      e.preventDefault();
-    }
-  });
-  addDomListener(actionElements.findNext, 'input', (e) => {
-    addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
-  });
-  addDomListener(actionElements.findPrevious, 'keydown', (e) => {
-    if (e.key === 'Enter') {
-      addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
-      e.preventDefault();
-    }
-  });
-  addDomListener(actionElements.findPrevious, 'input', (e) => {
-    addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
-  });
-  addDomListener(actionElements.findNext, 'blur', (e) => {
-    addons.search.instance.clearActiveDecoration();
-  });
-  addDomListener(actionElements.findPrevious, 'blur', (e) => {
-    addons.search.instance.clearActiveDecoration();
-  });
+  // addDomListener(actionElements.findNext, 'keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
+  //     e.preventDefault();
+  //   }
+  // });
+  // addDomListener(actionElements.findNext, 'input', (e) => {
+  //   addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
+  // });
+  // addDomListener(actionElements.findPrevious, 'keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
+  //     e.preventDefault();
+  //   }
+  // });
+  // addDomListener(actionElements.findPrevious, 'input', (e) => {
+  //   addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
+  // });
+  // addDomListener(actionElements.findNext, 'blur', (e) => {
+  //   addons.search.instance.clearActiveDecoration();
+  // });
+  // addDomListener(actionElements.findPrevious, 'blur', (e) => {
+  //   addons.search.instance.clearActiveDecoration();
+  // });
 
   // fit is called within a setTimeout, cols and rows need this.
   setTimeout(async () => {
@@ -377,9 +375,8 @@ function createTerminal(): void {
     // Set terminal size again to set the specific dimensions on the demo
     updateTerminalSize();
 
-    const res = await fetch(`http://localhost:${wsPort}/terminals?cols=` + term.cols + '&rows=' + term.rows, { method: 'POST',  signal: AbortSignal.timeout(5000) });
+    const res = await fetch(`http://localhost:${wsPort}/terminals?cols=` + term.cols + '&rows=' + term.rows, { method: 'POST', signal: AbortSignal.timeout(5000) });
     const processId = await res.text();
-    console.log('processid: ', processId)
     pid = processId;
     socketURL += processId;
     socket = new WebSocket(socketURL);
@@ -504,110 +501,110 @@ function initOptions(term: Terminal): void {
   // container.innerHTML = html;
 
   // Attach listeners
-  booleanOptions.forEach(o => {
-    const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
-    addDomListener(input, 'change', () => {
-      console.log('change', o, input.checked);
-      term.options[o] = input.checked;
-    });
-  });
-  numberOptions.forEach(o => {
-    const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
-    addDomListener(input, 'change', () => {
-      console.log('change', o, input.value);
-      if (o === 'lineHeight') {
-        term.options.lineHeight = parseFloat(input.value);
-      } else if (o === 'scrollSensitivity') {
-        term.options.scrollSensitivity = parseFloat(input.value);
-      } else if (o === 'scrollback') {
-        term.options.scrollback = parseInt(input.value);
-        setTimeout(() => updateTerminalSize(), 5);
-      } else {
-        term.options[o] = parseInt(input.value);
-      }
-      // Always update terminal size in case the option changes the dimensions
-      updateTerminalSize();
-    });
-  });
-  Object.keys(stringOptions).forEach(o => {
-    const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
-    addDomListener(input, 'change', () => {
-      console.log('change', o, input.value);
-      let value: any = input.value;
-      if (o === 'colsRows') {
-        const m = input.value.match(/^([0-9]+)x([0-9]+)$/);
-        if (m) {
-          autoResize = false;
-          term.resize(parseInt(m[1]), parseInt(m[2]));
-        } else {
-          autoResize = true;
-          input.value = 'auto';
-          updateTerminalSize();
-        }
-      } else if (o === 'theme') {
-        switch (input.value) {
-          case 'default':
-            value = undefined;
-            break;
-          case 'xtermjs':
-            // Custom theme to match style of xterm.js logo
-            value = xtermjsTheme;
-          case 'sapphire':
-            // Color source: https://github.com/Tyriar/vscode-theme-sapphire
-            value = {
-              background: '#1c2431',
-              foreground: '#cccccc',
-              selectionBackground: '#399ef440',
-              black: '#666666',
-              blue: '#399ef4',
-              brightBlack: '#666666',
-              brightBlue: '#399ef4',
-              brightCyan: '#21c5c7',
-              brightGreen: '#4eb071',
-              brightMagenta: '#b168df',
-              brightRed: '#da6771',
-              brightWhite: '#efefef',
-              brightYellow: '#fff099',
-              cyan: '#21c5c7',
-              green: '#4eb071',
-              magenta: '#b168df',
-              red: '#da6771',
-              white: '#efefef',
-              yellow: '#fff099'
-            };
-            break;
-          case 'light':
-            // Color source: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/light_plus.json
-            value = {
-              background: '#ffffff',
-              foreground: '#333333',
-              cursor: '#333333',
-              cursorAccent: '#ffffff',
-              selectionBackground: '#add6ff',
-              overviewRulerBorder: '#aaaaaa',
-              black: '#000000',
-              blue: '#0451a5',
-              brightBlack: '#666666',
-              brightBlue: '#0451a5',
-              brightCyan: '#0598bc',
-              brightGreen: '#14ce14',
-              brightMagenta: '#bc05bc',
-              brightRed: '#cd3131',
-              brightWhite: '#a5a5a5',
-              brightYellow: '#b5ba00',
-              cyan: '#0598bc',
-              green: '#00bc00',
-              magenta: '#bc05bc',
-              red: '#cd3131',
-              white: '#555555',
-              yellow: '#949800'
-            };
-            break;
-        }
-      }
-      term.options[o] = value;
-    });
-  });
+  // booleanOptions.forEach(o => {
+  //   const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
+  //   addDomListener(input, 'change', () => {
+  //     console.log('change', o, input.checked);
+  //     term.options[o] = input.checked;
+  //   });
+  // });
+  // numberOptions.forEach(o => {
+  //   const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
+  //   addDomListener(input, 'change', () => {
+  //     console.log('change', o, input.value);
+  //     if (o === 'lineHeight') {
+  //       term.options.lineHeight = parseFloat(input.value);
+  //     } else if (o === 'scrollSensitivity') {
+  //       term.options.scrollSensitivity = parseFloat(input.value);
+  //     } else if (o === 'scrollback') {
+  //       term.options.scrollback = parseInt(input.value);
+  //       setTimeout(() => updateTerminalSize(), 5);
+  //     } else {
+  //       term.options[o] = parseInt(input.value);
+  //     }
+  //     // Always update terminal size in case the option changes the dimensions
+  //     updateTerminalSize();
+  //   });
+  // });
+  // Object.keys(stringOptions).forEach(o => {
+  //   const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
+  //   addDomListener(input, 'change', () => {
+  //     console.log('change', o, input.value);
+  //     let value: any = input.value;
+  //     if (o === 'colsRows') {
+  //       const m = input.value.match(/^([0-9]+)x([0-9]+)$/);
+  //       if (m) {
+  //         autoResize = false;
+  //         term.resize(parseInt(m[1]), parseInt(m[2]));
+  //       } else {
+  //         autoResize = true;
+  //         input.value = 'auto';
+  //         updateTerminalSize();
+  //       }
+  //     } else if (o === 'theme') {
+  //       switch (input.value) {
+  //         case 'default':
+  //           value = undefined;
+  //           break;
+  //         case 'xtermjs':
+  //           // Custom theme to match style of xterm.js logo
+  //           value = xtermjsTheme;
+  //         case 'sapphire':
+  //           // Color source: https://github.com/Tyriar/vscode-theme-sapphire
+  //           value = {
+  //             background: '#1c2431',
+  //             foreground: '#cccccc',
+  //             selectionBackground: '#399ef440',
+  //             black: '#666666',
+  //             blue: '#399ef4',
+  //             brightBlack: '#666666',
+  //             brightBlue: '#399ef4',
+  //             brightCyan: '#21c5c7',
+  //             brightGreen: '#4eb071',
+  //             brightMagenta: '#b168df',
+  //             brightRed: '#da6771',
+  //             brightWhite: '#efefef',
+  //             brightYellow: '#fff099',
+  //             cyan: '#21c5c7',
+  //             green: '#4eb071',
+  //             magenta: '#b168df',
+  //             red: '#da6771',
+  //             white: '#efefef',
+  //             yellow: '#fff099'
+  //           };
+  //           break;
+  //         case 'light':
+  //           // Color source: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/light_plus.json
+  //           value = {
+  //             background: '#ffffff',
+  //             foreground: '#333333',
+  //             cursor: '#333333',
+  //             cursorAccent: '#ffffff',
+  //             selectionBackground: '#add6ff',
+  //             overviewRulerBorder: '#aaaaaa',
+  //             black: '#000000',
+  //             blue: '#0451a5',
+  //             brightBlack: '#666666',
+  //             brightBlue: '#0451a5',
+  //             brightCyan: '#0598bc',
+  //             brightGreen: '#14ce14',
+  //             brightMagenta: '#bc05bc',
+  //             brightRed: '#cd3131',
+  //             brightWhite: '#a5a5a5',
+  //             brightYellow: '#b5ba00',
+  //             cyan: '#0598bc',
+  //             green: '#00bc00',
+  //             magenta: '#bc05bc',
+  //             red: '#cd3131',
+  //             white: '#555555',
+  //             yellow: '#949800'
+  //           };
+  //           break;
+  //       }
+  //     }
+  //     term.options[o] = value;
+  //   });
+  // });
 }
 
 function initAddons(term: Terminal): void {
@@ -705,7 +702,7 @@ function updateFindResults(e: { resultIndex: number, resultCount: number } | und
 }
 
 function addDomListener(element: HTMLElement, type: string, handler: (...args: any[]) => any): void {
-  // element.addEventListener(type, handler);
+  element.addEventListener(type, handler);
   term._core._register({ dispose: () => element.removeEventListener(type, handler) });
 }
 
@@ -1426,7 +1423,7 @@ function initImageAddonExposed(): void {
   });
 }
 
-function testEvents(): void {
-  // document.getElementById('event-focus').addEventListener('click', ()=> term.focus());
-  // document.getElementById('event-blur').addEventListener('click', ()=> term.blur());
-}
+// function testEvents(): void {
+//   document.getElementById('event-focus').addEventListener('click', ()=> term.focus());
+//   document.getElementById('event-blur').addEventListener('click', ()=> term.blur());
+// }
