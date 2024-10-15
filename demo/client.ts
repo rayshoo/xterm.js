@@ -108,7 +108,7 @@ const actionElements = {
   findPrevious: document.querySelector('#find-previous') as HTMLInputElement,
   findResults: document.querySelector('#find-results')
 };
-const paddingElement = document.getElementById('padding') as HTMLInputElement;
+// const paddingElement = document.getElementById('padding') as HTMLInputElement;
 
 const xtermjsTheme = {
   foreground: '#F8F8F8',
@@ -222,29 +222,29 @@ if (document.location.pathname === '/test') {
   window.WebglAddon = WebglAddon;
 } else {
   createTerminal();
-  document.getElementById('dispose').addEventListener('click', disposeRecreateButtonHandler);
-  document.getElementById('create-new-window').addEventListener('click', createNewWindowButtonHandler);
-  document.getElementById('serialize').addEventListener('click', serializeButtonHandler);
-  document.getElementById('htmlserialize').addEventListener('click', htmlSerializeButtonHandler);
-  document.getElementById('custom-glyph').addEventListener('click', writeCustomGlyphHandler);
-  document.getElementById('load-test').addEventListener('click', loadTest);
-  document.getElementById('load-test-long-lines').addEventListener('click', loadTestLongLines);
-  document.getElementById('print-cjk').addEventListener('click', addCjk);
-  document.getElementById('print-cjk-sgr').addEventListener('click', addCjkRandomSgr);
-  document.getElementById('powerline-symbol-test').addEventListener('click', powerlineSymbolTest);
-  document.getElementById('underline-test').addEventListener('click', underlineTest);
-  document.getElementById('ansi-colors').addEventListener('click', ansiColorsTest);
-  document.getElementById('osc-hyperlinks').addEventListener('click', addAnsiHyperlink);
-  document.getElementById('sgr-test').addEventListener('click', sgrTest);
-  document.getElementById('add-grapheme-clusters').addEventListener('click', addGraphemeClusters);
-  document.getElementById('add-decoration').addEventListener('click', addDecoration);
-  document.getElementById('add-overview-ruler').addEventListener('click', addOverviewRuler);
-  document.getElementById('decoration-stress-test').addEventListener('click', decorationStressTest);
-  document.getElementById('weblinks-test').addEventListener('click', testWeblinks);
-  document.getElementById('bce').addEventListener('click', coloredErase);
+  // document.getElementById('dispose').addEventListener('click', disposeRecreateButtonHandler);
+  // document.getElementById('create-new-window').addEventListener('click', createNewWindowButtonHandler);
+  // document.getElementById('serialize').addEventListener('click', serializeButtonHandler);
+  // document.getElementById('htmlserialize').addEventListener('click', htmlSerializeButtonHandler);
+  // document.getElementById('custom-glyph').addEventListener('click', writeCustomGlyphHandler);
+  // document.getElementById('load-test').addEventListener('click', loadTest);
+  // document.getElementById('load-test-long-lines').addEventListener('click', loadTestLongLines);
+  // document.getElementById('print-cjk').addEventListener('click', addCjk);
+  // document.getElementById('print-cjk-sgr').addEventListener('click', addCjkRandomSgr);
+  // document.getElementById('powerline-symbol-test').addEventListener('click', powerlineSymbolTest);
+  // document.getElementById('underline-test').addEventListener('click', underlineTest);
+  // document.getElementById('ansi-colors').addEventListener('click', ansiColorsTest);
+  // document.getElementById('osc-hyperlinks').addEventListener('click', addAnsiHyperlink);
+  // document.getElementById('sgr-test').addEventListener('click', sgrTest);
+  // document.getElementById('add-grapheme-clusters').addEventListener('click', addGraphemeClusters);
+  // document.getElementById('add-decoration').addEventListener('click', addDecoration);
+  // document.getElementById('add-overview-ruler').addEventListener('click', addOverviewRuler);
+  // document.getElementById('decoration-stress-test').addEventListener('click', decorationStressTest);
+  // document.getElementById('weblinks-test').addEventListener('click', testWeblinks);
+  // document.getElementById('bce').addEventListener('click', coloredErase);
   addVtButtons();
   initImageAddonExposed();
-  testEvents();
+  // testEvents();
 }
 
 function createTerminal(): void {
@@ -331,37 +331,37 @@ function createTerminal(): void {
   });
   resizeObserver.observe(terminalContainer);
 
-  addDomListener(paddingElement, 'change', setPadding);
+  // addDomListener(paddingElement, 'change', setPadding);
 
-  addDomListener(actionElements.findNext, 'keydown', (e) => {
-    if (e.key === 'Enter') {
-      addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
-      e.preventDefault();
-    }
-  });
-  addDomListener(actionElements.findNext, 'input', (e) => {
-    addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
-  });
-  addDomListener(actionElements.findPrevious, 'keydown', (e) => {
-    if (e.key === 'Enter') {
-      addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
-      e.preventDefault();
-    }
-  });
-  addDomListener(actionElements.findPrevious, 'input', (e) => {
-    addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
-  });
-  addDomListener(actionElements.findNext, 'blur', (e) => {
-    addons.search.instance.clearActiveDecoration();
-  });
-  addDomListener(actionElements.findPrevious, 'blur', (e) => {
-    addons.search.instance.clearActiveDecoration();
-  });
+  // addDomListener(actionElements.findNext, 'keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
+  //     e.preventDefault();
+  //   }
+  // });
+  // addDomListener(actionElements.findNext, 'input', (e) => {
+  //   addons.search.instance.findNext(actionElements.findNext.value, getSearchOptions());
+  // });
+  // addDomListener(actionElements.findPrevious, 'keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
+  //     e.preventDefault();
+  //   }
+  // });
+  // addDomListener(actionElements.findPrevious, 'input', (e) => {
+  //   addons.search.instance.findPrevious(actionElements.findPrevious.value, getSearchOptions());
+  // });
+  // addDomListener(actionElements.findNext, 'blur', (e) => {
+  //   addons.search.instance.clearActiveDecoration();
+  // });
+  // addDomListener(actionElements.findPrevious, 'blur', (e) => {
+  //   addons.search.instance.clearActiveDecoration();
+  // });
 
   // fit is called within a setTimeout, cols and rows need this.
   setTimeout(async () => {
     initOptions(term);
-    paddingElement.value = '0';
+    // paddingElement.value = '0';
 
     // Set terminal size again to set the specific dimensions on the demo
     updateTerminalSize();
@@ -488,114 +488,114 @@ function initOptions(term: Terminal): void {
   });
   html += '</div>';
 
-  const container = document.getElementById('options-container');
-  container.innerHTML = html;
+  // const container = document.getElementById('options-container');
+  // container.innerHTML = html;
 
   // Attach listeners
-  booleanOptions.forEach(o => {
-    const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
-    addDomListener(input, 'change', () => {
-      console.log('change', o, input.checked);
-      term.options[o] = input.checked;
-    });
-  });
-  numberOptions.forEach(o => {
-    const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
-    addDomListener(input, 'change', () => {
-      console.log('change', o, input.value);
-      if (o === 'lineHeight') {
-        term.options.lineHeight = parseFloat(input.value);
-      } else if (o === 'scrollSensitivity') {
-        term.options.scrollSensitivity = parseFloat(input.value);
-      } else if (o === 'scrollback') {
-        term.options.scrollback = parseInt(input.value);
-        setTimeout(() => updateTerminalSize(), 5);
-      } else {
-        term.options[o] = parseInt(input.value);
-      }
-      // Always update terminal size in case the option changes the dimensions
-      updateTerminalSize();
-    });
-  });
-  Object.keys(stringOptions).forEach(o => {
-    const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
-    addDomListener(input, 'change', () => {
-      console.log('change', o, input.value);
-      let value: any = input.value;
-      if (o === 'colsRows') {
-        const m = input.value.match(/^([0-9]+)x([0-9]+)$/);
-        if (m) {
-          autoResize = false;
-          term.resize(parseInt(m[1]), parseInt(m[2]));
-        } else {
-          autoResize = true;
-          input.value = 'auto';
-          updateTerminalSize();
-        }
-      } else if (o === 'theme') {
-        switch (input.value) {
-          case 'default':
-            value = undefined;
-            break;
-          case 'xtermjs':
-            // Custom theme to match style of xterm.js logo
-            value = xtermjsTheme;
-          case 'sapphire':
-            // Color source: https://github.com/Tyriar/vscode-theme-sapphire
-            value = {
-              background: '#1c2431',
-              foreground: '#cccccc',
-              selectionBackground: '#399ef440',
-              black: '#666666',
-              blue: '#399ef4',
-              brightBlack: '#666666',
-              brightBlue: '#399ef4',
-              brightCyan: '#21c5c7',
-              brightGreen: '#4eb071',
-              brightMagenta: '#b168df',
-              brightRed: '#da6771',
-              brightWhite: '#efefef',
-              brightYellow: '#fff099',
-              cyan: '#21c5c7',
-              green: '#4eb071',
-              magenta: '#b168df',
-              red: '#da6771',
-              white: '#efefef',
-              yellow: '#fff099'
-            };
-            break;
-          case 'light':
-            // Color source: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/light_plus.json
-            value = {
-              background: '#ffffff',
-              foreground: '#333333',
-              cursor: '#333333',
-              cursorAccent: '#ffffff',
-              selectionBackground: '#add6ff',
-              overviewRulerBorder: '#aaaaaa',
-              black: '#000000',
-              blue: '#0451a5',
-              brightBlack: '#666666',
-              brightBlue: '#0451a5',
-              brightCyan: '#0598bc',
-              brightGreen: '#14ce14',
-              brightMagenta: '#bc05bc',
-              brightRed: '#cd3131',
-              brightWhite: '#a5a5a5',
-              brightYellow: '#b5ba00',
-              cyan: '#0598bc',
-              green: '#00bc00',
-              magenta: '#bc05bc',
-              red: '#cd3131',
-              white: '#555555',
-              yellow: '#949800'
-            };
-            break;
-        }
-      }
-      term.options[o] = value;
-    });
-  });
+  // booleanOptions.forEach(o => {
+  //   const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
+  //   addDomListener(input, 'change', () => {
+  //     console.log('change', o, input.checked);
+  //     term.options[o] = input.checked;
+  //   });
+  // });
+  // numberOptions.forEach(o => {
+  //   const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
+  //   addDomListener(input, 'change', () => {
+  //     console.log('change', o, input.value);
+  //     if (o === 'lineHeight') {
+  //       term.options.lineHeight = parseFloat(input.value);
+  //     } else if (o === 'scrollSensitivity') {
+  //       term.options.scrollSensitivity = parseFloat(input.value);
+  //     } else if (o === 'scrollback') {
+  //       term.options.scrollback = parseInt(input.value);
+  //       setTimeout(() => updateTerminalSize(), 5);
+  //     } else {
+  //       term.options[o] = parseInt(input.value);
+  //     }
+  //     // Always update terminal size in case the option changes the dimensions
+  //     updateTerminalSize();
+  //   });
+  // });
+  // Object.keys(stringOptions).forEach(o => {
+  //   const input = document.getElementById(`opt-${o}`) as HTMLInputElement;
+  //   addDomListener(input, 'change', () => {
+  //     console.log('change', o, input.value);
+  //     let value: any = input.value;
+  //     if (o === 'colsRows') {
+  //       const m = input.value.match(/^([0-9]+)x([0-9]+)$/);
+  //       if (m) {
+  //         autoResize = false;
+  //         term.resize(parseInt(m[1]), parseInt(m[2]));
+  //       } else {
+  //         autoResize = true;
+  //         input.value = 'auto';
+  //         updateTerminalSize();
+  //       }
+  //     } else if (o === 'theme') {
+  //       switch (input.value) {
+  //         case 'default':
+  //           value = undefined;
+  //           break;
+  //         case 'xtermjs':
+  //           // Custom theme to match style of xterm.js logo
+  //           value = xtermjsTheme;
+  //         case 'sapphire':
+  //           // Color source: https://github.com/Tyriar/vscode-theme-sapphire
+  //           value = {
+  //             background: '#1c2431',
+  //             foreground: '#cccccc',
+  //             selectionBackground: '#399ef440',
+  //             black: '#666666',
+  //             blue: '#399ef4',
+  //             brightBlack: '#666666',
+  //             brightBlue: '#399ef4',
+  //             brightCyan: '#21c5c7',
+  //             brightGreen: '#4eb071',
+  //             brightMagenta: '#b168df',
+  //             brightRed: '#da6771',
+  //             brightWhite: '#efefef',
+  //             brightYellow: '#fff099',
+  //             cyan: '#21c5c7',
+  //             green: '#4eb071',
+  //             magenta: '#b168df',
+  //             red: '#da6771',
+  //             white: '#efefef',
+  //             yellow: '#fff099'
+  //           };
+  //           break;
+  //         case 'light':
+  //           // Color source: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/light_plus.json
+  //           value = {
+  //             background: '#ffffff',
+  //             foreground: '#333333',
+  //             cursor: '#333333',
+  //             cursorAccent: '#ffffff',
+  //             selectionBackground: '#add6ff',
+  //             overviewRulerBorder: '#aaaaaa',
+  //             black: '#000000',
+  //             blue: '#0451a5',
+  //             brightBlack: '#666666',
+  //             brightBlue: '#0451a5',
+  //             brightCyan: '#0598bc',
+  //             brightGreen: '#14ce14',
+  //             brightMagenta: '#bc05bc',
+  //             brightRed: '#cd3131',
+  //             brightWhite: '#a5a5a5',
+  //             brightYellow: '#b5ba00',
+  //             cyan: '#0598bc',
+  //             green: '#00bc00',
+  //             magenta: '#bc05bc',
+  //             red: '#cd3131',
+  //             white: '#555555',
+  //             yellow: '#949800'
+  //           };
+  //           break;
+  //       }
+  //     }
+  //     term.options[o] = value;
+  //   });
+  // });
 }
 
 function initAddons(term: Terminal): void {
@@ -677,9 +677,9 @@ function initAddons(term: Terminal): void {
     wrapper.appendChild(label);
     fragment.appendChild(wrapper);
   });
-  const container = document.getElementById('addons-container');
-  container.innerHTML = '';
-  container.appendChild(fragment);
+  // const container = document.getElementById('addons-container');
+  // container.innerHTML = '';
+  // container.appendChild(fragment);
 }
 
 function updateFindResults(e: { resultIndex: number, resultCount: number } | undefined): void {
@@ -735,7 +735,7 @@ function htmlSerializeButtonHandler(): void {
 
 function setTextureAtlas(e: HTMLCanvasElement): void {
   styleAtlasPage(e);
-  document.querySelector('#texture-atlas').replaceChildren(e);
+  // document.querySelector('#texture-atlas').replaceChildren(e);
 }
 function appendTextureAtlas(e: HTMLCanvasElement): void {
   styleAtlasPage(e);
@@ -1298,7 +1298,7 @@ function addVtButtons(): void {
     vtFragment.appendChild(createButton(spec.label, spec.description, s, spec.paramCount));
   }
 
-  document.querySelector('#vt-container').appendChild(vtFragment);
+  // document.querySelector('#vt-container').appendChild(vtFragment);
 }
 
 function testWeblinks(): void {
@@ -1342,26 +1342,26 @@ Test BG-colored Erase (BCE):
 
 function initImageAddonExposed(): void {
   const DEFAULT_OPTIONS: IImageAddonOptions = (addons.image.instance as any)._defaultOpts;
-  const limitStorageElement = document.querySelector<HTMLInputElement>('#image-storagelimit');
-  limitStorageElement.valueAsNumber = addons.image.instance.storageLimit;
-  addDomListener(limitStorageElement, 'change', () => {
-    try {
-      addons.image.instance.storageLimit = limitStorageElement.valueAsNumber;
-      limitStorageElement.valueAsNumber = addons.image.instance.storageLimit;
-      console.log('changed storageLimit to', addons.image.instance.storageLimit);
-    } catch (e) {
-      limitStorageElement.valueAsNumber = addons.image.instance.storageLimit;
-      console.log('storageLimit at', addons.image.instance.storageLimit);
-      throw e;
-    }
-  });
-  const showPlaceholderElement = document.querySelector<HTMLInputElement>('#image-showplaceholder');
-  showPlaceholderElement.checked = addons.image.instance.showPlaceholder;
-  addDomListener(showPlaceholderElement, 'change', () => {
-    addons.image.instance.showPlaceholder = showPlaceholderElement.checked;
-  });
-  const ctorOptionsElement = document.querySelector<HTMLTextAreaElement>('#image-options');
-  ctorOptionsElement.value = JSON.stringify(DEFAULT_OPTIONS, null, 2);
+  // const limitStorageElement = document.querySelector<HTMLInputElement>('#image-storagelimit');
+  // limitStorageElement.valueAsNumber = addons.image.instance.storageLimit;
+  // addDomListener(limitStorageElement, 'change', () => {
+  //   try {
+  //     addons.image.instance.storageLimit = limitStorageElement.valueAsNumber;
+  //     limitStorageElement.valueAsNumber = addons.image.instance.storageLimit;
+  //     console.log('changed storageLimit to', addons.image.instance.storageLimit);
+  //   } catch (e) {
+  //     limitStorageElement.valueAsNumber = addons.image.instance.storageLimit;
+  //     console.log('storageLimit at', addons.image.instance.storageLimit);
+  //     throw e;
+  //   }
+  // });
+  // const showPlaceholderElement = document.querySelector<HTMLInputElement>('#image-showplaceholder');
+  // showPlaceholderElement.checked = addons.image.instance.showPlaceholder;
+  // addDomListener(showPlaceholderElement, 'change', () => {
+  //   addons.image.instance.showPlaceholder = showPlaceholderElement.checked;
+  // });
+  // const ctorOptionsElement = document.querySelector<HTMLTextAreaElement>('#image-options');
+  // ctorOptionsElement.value = JSON.stringify(DEFAULT_OPTIONS, null, 2);
 
   const sixelDemo = (url: string) => () => fetch(url)
     .then(resp => resp.arrayBuffer())
@@ -1380,12 +1380,12 @@ function initImageAddonExposed(): void {
       term.write(`\x1b]1337;File=inline=1;size=${data.length}:${btoa(sdata)}\x1b\\`);
     });
 
-  document.getElementById('image-demo1').addEventListener('click',
-    sixelDemo('https://raw.githubusercontent.com/saitoha/libsixel/master/images/snake.six'));
-  document.getElementById('image-demo2').addEventListener('click',
-    sixelDemo('https://raw.githubusercontent.com/jerch/node-sixel/master/testfiles/test2.sixel'));
-  document.getElementById('image-demo3').addEventListener('click',
-    iipDemo('https://raw.githubusercontent.com/jerch/node-sixel/master/palette.png'));
+  // document.getElementById('image-demo1').addEventListener('click',
+  //   sixelDemo('https://raw.githubusercontent.com/saitoha/libsixel/master/images/snake.six'));
+  // document.getElementById('image-demo2').addEventListener('click',
+  //   sixelDemo('https://raw.githubusercontent.com/jerch/node-sixel/master/testfiles/test2.sixel'));
+  // document.getElementById('image-demo3').addEventListener('click',
+  //   iipDemo('https://raw.githubusercontent.com/jerch/node-sixel/master/palette.png'));
 
   // demo for image retrieval API
   term.element.addEventListener('click', (ev: MouseEvent) => {
@@ -1414,7 +1414,7 @@ function initImageAddonExposed(): void {
   });
 }
 
-function testEvents(): void {
-  document.getElementById('event-focus').addEventListener('click', ()=> term.focus());
-  document.getElementById('event-blur').addEventListener('click', ()=> term.blur());
-}
+// function testEvents(): void {
+//   document.getElementById('event-focus').addEventListener('click', ()=> term.focus());
+//   document.getElementById('event-blur').addEventListener('click', ()=> term.blur());
+// }
