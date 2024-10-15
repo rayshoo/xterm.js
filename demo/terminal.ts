@@ -308,7 +308,7 @@ function createTerminal(): void {
     fetch(url, { method: 'POST', signal: AbortSignal.timeout(5000) });
   });
   protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-  socketURL = protocol + location.hostname + ((wsPort) ? (':' + wsPort) : '') + '/terminals/';
+  socketURL = protocol + 'localhost' + ((wsPort) ? (':' + wsPort) : '') + '/terminals/';
 
   addons.fit.instance!.fit();
 
@@ -376,7 +376,9 @@ function createTerminal(): void {
     updateTerminalSize();
 
     const res = await fetch(`http://localhost:${wsPort}/terminals?cols=` + term.cols + '&rows=' + term.rows, { method: 'POST', signal: AbortSignal.timeout(5000) });
+    console.log(res)
     const processId = await res.text();
+    console.log(processId)
     pid = processId;
     socketURL += processId;
     socket = new WebSocket(socketURL);
