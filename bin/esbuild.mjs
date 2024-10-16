@@ -156,7 +156,7 @@ if (config.addon) {
   bundleConfig = {
     ...bundleConfig,
     entryPoints: [`demo/terminal.ts`],
-    outfile: 'demo/dist/terminal-bundle.js',
+    outfile: '../../frontend/src/assets/js/terminal-bundle.js',
     external: ['util', 'os', 'fs', 'path', 'stream', 'Terminal'],
     alias: {
       // Library ESM imports
