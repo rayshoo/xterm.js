@@ -45,12 +45,13 @@ export interface IWindowWithTerminal extends Window {
 }
 declare let window: IWindowWithTerminal;
 
+export let socket;
 let term;
 let protocol;
 let socketURL;
-export let socket;
 let pid;
 let autoResize: boolean = true;
+let resizeHandler;
 
 type AddonType = 'attach' | 'clipboard' | 'fit' | 'image' | 'search' | 'serialize' | 'unicode11' | 'unicodeGraphemes' | 'webLinks' | 'webgl' | 'ligatures';
 
@@ -297,7 +298,7 @@ function createTerminal(): void {
   typedTerm.loadAddon(addons.clipboard.instance);
 
   window.term = term;  // Expose `term` to window for debugging purposes
-  term.onResize((size: { cols: number, rows: number }) => {
+  resizeHandler = term.onResize((size: { cols: number, rows: number }) => {
     if (!pid) {
       return;
     }
@@ -383,7 +384,26 @@ function createTerminal(): void {
     socketURL += processId;
     socket = new WebSocket(socketURL);
     socket.onopen = runRealTerminal;
-    socket.onclose = runFakeTerminal;
+    socket.onclose = ()=>{
+      if (term) {
+        resizeHandler.dispose();
+        term.dispose();
+        term = null;
+        window.term = null;
+        socket = null;
+        addons.attach.instance = undefined;
+        addons.clipboard.instance = undefined;
+        addons.fit.instance = undefined;
+        addons.image.instance = undefined;
+        addons.search.instance = undefined;
+        addons.serialize.instance = undefined;
+        addons.unicode11.instance = undefined;
+        addons.unicodeGraphemes.instance = undefined;
+        addons.ligatures.instance = undefined;
+        addons.webLinks.instance = undefined;
+        addons.webgl.instance = undefined;
+      }
+    };
     socket.onerror = runFakeTerminal;
   }, 0);
 }
