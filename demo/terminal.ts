@@ -48,7 +48,7 @@ declare let window: IWindowWithTerminal;
 let term;
 let protocol;
 let socketURL;
-let socket;
+export let socket;
 let pid;
 let autoResize: boolean = true;
 
